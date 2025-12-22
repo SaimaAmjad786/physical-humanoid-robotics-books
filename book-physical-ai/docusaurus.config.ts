@@ -15,15 +15,16 @@ const config: Config = {
   },
 
   // Set the production url of your site here
-  url: 'https://your-username.github.io',
+  url: 'https://saimaamjad786.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/book-physical-ai/',
+  baseUrl: '/physical-humanoid-robotics-books/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-username', // Usually your GitHub org/user name.
-  projectName: 'book-physical-ai', // Usually your repo name.
+  organizationName: 'SaimaAmjad786', // Usually your GitHub org/user name.
+  projectName: 'physical-humanoid-robotics-books', // Usually your repo name.
+  trailingSlash: false,
 
   onBrokenLinks: 'throw',
 
@@ -70,7 +71,7 @@ const config: Config = {
           label: 'Read the Book',
         },
         {
-          href: 'https://github.com/your-username/book-physical-ai',
+          href: 'https://github.com/SaimaAmjad786/physical-humanoid-robotics-books',
           label: 'GitHub',
           position: 'right',
         },
@@ -93,7 +94,7 @@ const config: Config = {
           items: [
             {
               label: 'GitHub Repository',
-              href: 'https://github.com/your-username/book-physical-ai',
+              href: 'https://github.com/SaimaAmjad786/physical-humanoid-robotics-books',
             },
           ],
         },
