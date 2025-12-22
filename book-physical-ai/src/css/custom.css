@@ -1,0 +1,548 @@
+/**
+ * Physical AI Book - Custom Educational Styling
+ * Clean, readable, accessible design for beginner-to-intermediate learners
+ */
+
+/* ========================================
+   Color Variables
+   ======================================== */
+:root {
+  /* Primary color scheme - Professional blue */
+  --ifm-color-primary: #2563eb;
+  --ifm-color-primary-dark: #1d4ed8;
+  --ifm-color-primary-darker: #1e40af;
+  --ifm-color-primary-darkest: #1e3a8a;
+  --ifm-color-primary-light: #3b82f6;
+  --ifm-color-primary-lighter: #60a5fa;
+  --ifm-color-primary-lightest: #93c5fd;
+
+  /* Hands-on section accent - Warm orange */
+  --hands-on-accent: #f59e0b;
+  --hands-on-bg: #fef3c7;
+  --hands-on-border: #f59e0b;
+
+  /* Typography */
+  --ifm-font-size-base: 17px;
+  --ifm-line-height-base: 1.6;
+  --ifm-code-font-size: 95%;
+
+  /* Spacing */
+  --ifm-leading-desktop: 1.6;
+  --ifm-paragraph-margin-bottom: 1.2rem;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode adjustments */
+[data-theme='dark'] {
+  --ifm-color-primary: #60a5fa;
+  --ifm-color-primary-dark: #3b82f6;
+  --ifm-color-primary-darker: #2563eb;
+  --ifm-color-primary-darkest: #1d4ed8;
+  --ifm-color-primary-light: #93c5fd;
+  --ifm-color-primary-lighter: #bfdbfe;
+  --ifm-color-primary-lightest: #dbeafe;
+
+  --hands-on-accent: #fbbf24;
+  --hands-on-bg: rgba(251, 191, 36, 0.15);
+  --hands-on-border: #fbbf24;
+
+  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* ========================================
+   Typography Enhancement
+   ======================================== */
+body {
+  font-size: var(--ifm-font-size-base);
+  line-height: var(--ifm-line-height-base);
+}
+
+article {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+article p {
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+}
+
+article h1, article h2, article h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+article h1 {
+  font-size: 2.25rem;
+}
+
+article h2 {
+  font-size: 1.75rem;
+}
+
+article h3 {
+  font-size: 1.375rem;
+}
+
+/* ========================================
+   CSS Animations
+   ======================================== */
+
+/* Fade in from bottom */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide in from left */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Slide in from right */
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Gentle bounce */
+@keyframes gentleBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+/* Pulse effect */
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.95;
+  }
+}
+
+/* Glow effect */
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+  }
+  50% {
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.4);
+  }
+}
+
+/* Apply fade-in to main content */
+article > * {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* Stagger animation for lists */
+article ul > li,
+article ol > li {
+  animation: fadeInUp 0.5s ease-out backwards;
+}
+
+article ul > li:nth-child(1),
+article ol > li:nth-child(1) { animation-delay: 0.05s; }
+article ul > li:nth-child(2),
+article ol > li:nth-child(2) { animation-delay: 0.1s; }
+article ul > li:nth-child(3),
+article ol > li:nth-child(3) { animation-delay: 0.15s; }
+article ul > li:nth-child(4),
+article ol > li:nth-child(4) { animation-delay: 0.2s; }
+article ul > li:nth-child(5),
+article ol > li:nth-child(5) { animation-delay: 0.25s; }
+article ul > li:nth-child(6),
+article ol > li:nth-child(6) { animation-delay: 0.3s; }
+
+/* Slide animation for headings */
+article h2 {
+  animation: slideInLeft 0.7s ease-out;
+}
+
+article h3 {
+  animation: slideInRight 0.6s ease-out;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  article > *,
+  article ul > li,
+  article ol > li,
+  article h2,
+  article h3 {
+    animation: none;
+  }
+}
+
+/* ========================================
+   Hands-On Section Callout Boxes
+   ======================================== */
+.hands-on-section {
+  background: linear-gradient(
+    135deg,
+    var(--hands-on-bg) 0%,
+    rgba(254, 243, 199, 0.6) 100%
+  );
+  border-left: 5px solid var(--hands-on-border);
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.8s ease-out, glow 3s ease-in-out infinite;
+}
+
+/* Decorative corner accent */
+.hands-on-section::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, transparent 50%, rgba(245, 158, 11, 0.1) 50%);
+  border-bottom-left-radius: 12px;
+}
+
+[data-theme='dark'] .hands-on-section {
+  background: linear-gradient(
+    135deg,
+    var(--hands-on-bg) 0%,
+    rgba(251, 191, 36, 0.08) 100%
+  );
+  box-shadow: 0 4px 16px rgba(251, 191, 36, 0.2);
+}
+
+.hands-on-section:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 0 8px 24px rgba(245, 158, 11, 0.25);
+}
+
+[data-theme='dark'] .hands-on-section:hover {
+  box-shadow: 0 8px 24px rgba(251, 191, 36, 0.3);
+}
+
+.hands-on-section::before {
+  content: "🔧 Hands-On Exercise";
+  display: inline-block;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--hands-on-accent);
+  margin-bottom: 1rem;
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 6px;
+  border: 2px solid var(--hands-on-border);
+  animation: gentleBounce 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+}
+
+[data-theme='dark'] .hands-on-section::before {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Highlighted headings within hands-on sections */
+.hands-on-section h2,
+.hands-on-section h3 {
+  color: var(--hands-on-accent);
+  border-bottom: 2px solid var(--hands-on-border);
+  padding-bottom: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.hands-on-section h2:first-of-type,
+.hands-on-section h3:first-of-type {
+  margin-top: 0.5rem;
+}
+
+/* Enhanced code blocks within hands-on sections */
+.hands-on-section pre[class*="language-"] {
+  border: 2px solid var(--hands-on-border);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.15);
+}
+
+/* Highlighted lists within hands-on sections */
+.hands-on-section ul > li,
+.hands-on-section ol > li {
+  margin-bottom: 0.75rem;
+  padding-left: 0.5rem;
+  border-left: 2px solid transparent;
+  transition: border-color 0.2s ease, padding-left 0.2s ease;
+}
+
+.hands-on-section ul > li:hover,
+.hands-on-section ol > li:hover {
+  border-left-color: var(--hands-on-accent);
+  padding-left: 1rem;
+}
+
+/* Alternative admonition-based hands-on styling */
+.admonition-hands-on {
+  border-color: var(--hands-on-border);
+  background-color: var(--hands-on-bg);
+  border-width: 2px;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.admonition-hands-on .admonition-icon svg {
+  fill: var(--hands-on-accent);
+}
+
+/* Special styling for details/summary in hands-on sections */
+.hands-on-section details {
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  transition: all 0.3s ease;
+}
+
+[data-theme='dark'] .hands-on-section details {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.hands-on-section details:hover {
+  border-color: var(--hands-on-accent);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.2);
+}
+
+.hands-on-section details summary {
+  font-weight: 600;
+  cursor: pointer;
+  color: var(--hands-on-accent);
+  transition: color 0.2s ease;
+}
+
+.hands-on-section details summary:hover {
+  color: var(--hands-on-border);
+}
+
+/* ========================================
+   Code Block Enhancements
+   ======================================== */
+pre[class*="language-"] {
+  border-radius: 8px;
+  margin: 1.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+pre[class*="language-"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Inline code */
+code:not([class*="language-"]) {
+  background-color: rgba(37, 99, 235, 0.08);
+  border: 1px solid rgba(37, 99, 235, 0.15);
+  border-radius: 4px;
+  padding: 0.15rem 0.4rem;
+  font-size: 0.9em;
+  transition: all 0.2s ease;
+}
+
+code:not([class*="language-"]):hover {
+  background-color: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.25);
+}
+
+[data-theme='dark'] code:not([class*="language-"]) {
+  background-color: rgba(96, 165, 250, 0.15);
+  border-color: rgba(96, 165, 250, 0.25);
+}
+
+[data-theme='dark'] code:not([class*="language-"]):hover {
+  background-color: rgba(96, 165, 250, 0.22);
+  border-color: rgba(96, 165, 250, 0.35);
+}
+
+/* ========================================
+   Smooth Scrolling
+   ======================================== */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ========================================
+   Link Hover Effects
+   ======================================== */
+article a:not(.button) {
+  transition: color 0.2s ease, border-bottom-color 0.2s ease;
+  border-bottom: 1px solid transparent;
+}
+
+article a:not(.button):hover {
+  border-bottom-color: var(--ifm-color-primary);
+}
+
+/* ========================================
+   Admonition Animations
+   ======================================== */
+.admonition {
+  animation: fadeInUp 0.6s ease-out;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.admonition:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ========================================
+   Button Enhancements
+   ======================================== */
+.button {
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.button:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.button:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ========================================
+   Table Styling
+   ======================================== */
+table {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  animation: fadeInUp 0.6s ease-out;
+  transition: box-shadow 0.3s ease;
+}
+
+table:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+/* Animated table rows */
+tbody tr {
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+tbody tr:hover {
+  background-color: rgba(37, 99, 235, 0.05);
+  transform: scale(1.01);
+}
+
+[data-theme='dark'] tbody tr:hover {
+  background-color: rgba(96, 165, 250, 0.08);
+}
+
+/* ========================================
+   Page Transition Effects
+   ======================================== */
+.theme-doc-markdown {
+  animation: fadeInUp 0.5s ease-out;
+}
+
+/* Scroll progress indicator effect */
+article {
+  position: relative;
+}
+
+/* ========================================
+   Mobile Responsiveness
+   ======================================== */
+@media (max-width: 768px) {
+  :root {
+    --ifm-font-size-base: 16px;
+  }
+
+  article h1 {
+    font-size: 1.875rem;
+  }
+
+  article h2 {
+    font-size: 1.5rem;
+  }
+
+  .hands-on-section {
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .hands-on-section::before {
+    font-size: 1rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  /* Reduce animation intensity on mobile for better performance */
+  .hands-on-section {
+    animation: fadeInUp 0.5s ease-out;
+  }
+
+  .hands-on-section:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Disable stagger animations on mobile */
+  article ul > li,
+  article ol > li {
+    animation-delay: 0s;
+  }
+}
+
+/* ========================================
+   Performance Optimizations
+   ======================================== */
+
+/* Use GPU acceleration for smoother animations */
+.hands-on-section,
+.button,
+.admonition,
+pre[class*="language-"],
+table {
+  will-change: transform;
+}
+
+/* Reduce animations on low-end devices */
+@media (prefers-reduced-motion: no-preference) and (max-width: 768px) {
+  * {
+    animation-duration: 0.4s !important;
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "label": "Chapter 2: Sensors, Actuators, and Environment",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "Learn about sensors that perceive the world, actuators that enable movement, and how agents interact with their environment through a virtual robot simulation."
+  }
+}

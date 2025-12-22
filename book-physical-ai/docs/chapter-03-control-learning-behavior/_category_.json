@@ -1,0 +1,8 @@
+{
+  "label": "Chapter 3: Control, Learning, and Behavior",
+  "position": 3,
+  "link": {
+    "type": "generated-index",
+    "description": "Explore control systems for physical agents, learning mechanisms, and build a behavior-based agent that combines multiple behaviors intelligently."
+  }
+}
