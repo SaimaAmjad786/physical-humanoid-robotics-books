@@ -1,329 +1,51 @@
 import React, { useState, useRef, useEffect } from 'react';
-
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
+  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     if (!inputValue.trim()) return;
-
-    const userMessage = {
-      role: 'user',
-      content: inputValue,
-      timestamp: new Date().toISOString()
-    };
-
-    setMessages(prev => [...prev, userMessage]);
+    setMessages(prev => [...prev, { role: 'user', content: inputValue }]);
+    const query = inputValue;
     setInputValue('');
     setIsLoading(true);
-    setError(null);
-
     try {
-      const response = await fetch('https://saimaamjad-reg-chatbot.hf.space/v1/query', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          query: userMessage.content
-        })
+      const res = await fetch('https://saimaamjad-reg-chatbot.hf.space/v1/query', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ query })
       });
-
-      if (!response.ok) {
-        throw new Error(`Server error: ${response.status} ${response.statusText}`);
-      }
-
-      const data = await response.json();
-
-      const assistantMessage = {
-        role: 'assistant',
-        content: data.answer,
-        citations: data.citations,
-        responseTime: data.response_time_ms,
-        timestamp: new Date().toISOString()
-      };
-
-      setMessages(prev => [...prev, assistantMessage]);
-    } catch (err) {
-      console.error('Error fetching response:', err);
-      setError(err.message || 'Failed to get response. Please try again.');
-
-      // Add error message to chat
-      const errorMessage = {
-        role: 'error',
-        content: `Error: ${err.message || 'Failed to connect to server. Make sure the backend is running on http://127.0.0.1:8000'}`,
-        timestamp: new Date().toISOString()
-      };
-      setMessages(prev => [...prev, errorMessage]);
-    } finally {
-      setIsLoading(false);
-    }
+      const data = await res.json();
+      setMessages(prev => [...prev, { role: 'assistant', content: data.answer, time: data.response_time_ms }]);
+    } catch { setMessages(prev => [...prev, { role: 'error', content: 'Connection failed.' }]); }
+    finally { setIsLoading(false); }
   };
-
-  const handleClearChat = () => {
-    setMessages([]);
-    setError(null);
-  };
-
+  const m = typeof window !== 'undefined' && window.innerWidth < 500;
   return (
     <>
-      {/* Floating Button */}
-      {!isOpen && (
-        <button
-          onClick={() => setIsOpen(true)}
-          style={{
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            width: '60px',
-            height: '60px',
-            borderRadius: '50%',
-            backgroundColor: '#2563eb',
-            color: 'white',
-            border: 'none',
-            cursor: 'pointer',
-            fontSize: '24px',
-            boxShadow: '0 4px 12px rgba(37, 99, 235, 0.3)',
-            zIndex: 1000,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            transition: 'transform 0.2s',
-          }}
-          onMouseEnter={(e) => e.target.style.transform = 'scale(1.1)'}
-          onMouseLeave={(e) => e.target.style.transform = 'scale(1)'}
-          title="Open Chat"
-        >
-          💬
-        </button>
-      )}
-
-      {/* Chat Window */}
-      {isOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            bottom: '20px',
-            right: '20px',
-            width: '380px',
-            height: '550px',
-            backgroundColor: 'white',
-            borderRadius: '12px',
-            boxShadow: '0 8px 24px rgba(0, 0, 0, 0.2)',
-            zIndex: 1000,
-            display: 'flex',
-            flexDirection: 'column',
-            overflow: 'hidden',
-          }}
-        >
-          {/* Header */}
-          <div
-            style={{
-              backgroundColor: '#2563eb',
-              color: 'white',
-              padding: '16px',
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <h3 style={{ margin: 0, fontSize: '18px', fontWeight: '600' }}>
-              Ask a Question
-            </h3>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <button
-                onClick={handleClearChat}
-                style={{
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  border: 'none',
-                  color: 'white',
-                  cursor: 'pointer',
-                  borderRadius: '4px',
-                  padding: '4px 8px',
-                  fontSize: '12px',
-                }}
-                title="Clear chat"
-              >
-                Clear
-              </button>
-              <button
-                onClick={() => setIsOpen(false)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: 'white',
-                  fontSize: '24px',
-                  cursor: 'pointer',
-                  padding: 0,
-                  lineHeight: 1,
-                }}
-                title="Close chat"
-              >
-                ×
-              </button>
-            </div>
-          </div>
-
-          {/* Messages Container */}
-          <div
-            style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: '16px',
-              backgroundColor: '#f8f9fa',
-            }}
-          >
-            {messages.length === 0 && (
-              <div style={{ textAlign: 'center', color: '#6c757d', marginTop: '20px' }}>
-                <p>👋 Welcome! Ask me anything about the book.</p>
-              </div>
-            )}
-
-            {messages.map((message, index) => (
-              <div
-                key={index}
-                style={{
-                  marginBottom: '12px',
-                  display: 'flex',
-                  justifyContent: message.role === 'user' ? 'flex-end' : 'flex-start',
-                }}
-              >
-                <div
-                  style={{
-                    maxWidth: '80%',
-                    padding: '10px 14px',
-                    borderRadius: '12px',
-                    backgroundColor: message.role === 'user'
-                      ? '#2563eb'
-                      : message.role === 'error'
-                      ? '#dc3545'
-                      : 'white',
-                    color: message.role === 'user' || message.role === 'error' ? 'white' : '#333',
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-                  }}
-                >
-                  <div style={{ fontSize: '14px', lineHeight: '1.5' }}>
-                    {message.content}
-                  </div>
-                  {message.citations && message.citations.length > 0 && (
-                    <div style={{
-                      marginTop: '8px',
-                      fontSize: '12px',
-                      color: '#6c757d',
-                      borderTop: '1px solid #e9ecef',
-                      paddingTop: '8px'
-                    }}>
-                      <strong>Sources:</strong>
-                      {message.citations.map((citation, idx) => (
-                        <div key={idx} style={{ marginTop: '4px' }}>
-                          • {citation.chapter} {citation.section && `- ${citation.section}`}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                  {message.responseTime && (
-                    <div style={{
-                      marginTop: '4px',
-                      fontSize: '11px',
-                      color: '#6c757d',
-                      fontStyle: 'italic'
-                    }}>
-                      {message.responseTime}ms
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-
-            {isLoading && (
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'flex-start',
-                  marginBottom: '12px',
-                }}
-              >
-                <div
-                  style={{
-                    padding: '10px 14px',
-                    borderRadius: '12px',
-                    backgroundColor: 'white',
-                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.1)',
-                  }}
-                >
-                  <div style={{ fontSize: '14px', color: '#6c757d' }}>
-                    Thinking...
-                  </div>
-                </div>
-              </div>
-            )}
-
-            <div ref={messagesEndRef} />
-          </div>
-
-          {/* Input Form */}
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              padding: '16px',
-              borderTop: '1px solid #e9ecef',
-              backgroundColor: 'white',
-            }}
-          >
-            <div style={{ display: 'flex', gap: '8px' }}>
-              <input
-                type="text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-                placeholder="Type your question..."
-                disabled={isLoading}
-                style={{
-                  flex: 1,
-                  padding: '10px 12px',
-                  border: '1px solid #dee2e6',
-                  borderRadius: '8px',
-                  fontSize: '14px',
-                  outline: 'none',
-                }}
-                onFocus={(e) => e.target.style.borderColor = '#2563eb'}
-                onBlur={(e) => e.target.style.borderColor = '#dee2e6'}
-              />
-              <button
-                type="submit"
-                disabled={isLoading || !inputValue.trim()}
-                style={{
-                  padding: '10px 20px',
-                  backgroundColor: isLoading || !inputValue.trim() ? '#6c757d' : '#2563eb',
-                  color: 'white',
-                  border: 'none',
-                  borderRadius: '8px',
-                  cursor: isLoading || !inputValue.trim() ? 'not-allowed' : 'pointer',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                }}
-              >
-                {isLoading ? '...' : 'Send'}
-              </button>
-            </div>
-          </form>
+      <style>{`@keyframes p{0%,100%{transform:scale(1)}50%{transform:scale(1.08)}}@keyframes s{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}@keyframes d{0%,80%,100%{transform:translateY(0)}40%{transform:translateY(-6px)}}.cb:hover{transform:scale(1.1)!important}.ch:hover{background:rgba(255,255,255,0.35)!important}`}</style>
+      {!isOpen&&<button className="cb" onClick={()=>setIsOpen(true)} style={{position:'fixed',bottom:m?15:25,right:m?15:25,width:m?56:64,height:m?56:64,borderRadius:'50%',background:'linear-gradient(135deg,#667eea,#764ba2)',color:'#fff',border:'none',cursor:'pointer',fontSize:m?26:30,boxShadow:'0 6px 25px rgba(102,126,234,0.5)',zIndex:9999,display:'flex',alignItems:'center',justifyContent:'center',transition:'all .3s',animation:'p 2s infinite'}}>💬</button>}
+      {isOpen&&<div style={{position:'fixed',bottom:m?0:20,right:m?0:20,left:m?0:'auto',width:m?'100%':400,height:m?'100%':600,maxHeight:m?'100vh':'85vh',background:'#fff',borderRadius:m?0:24,boxShadow:'0 20px 60px rgba(0,0,0,0.25)',zIndex:9999,display:'flex',flexDirection:'column',overflow:'hidden',animation:'s .3s',fontFamily:'-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,sans-serif'}}>
+        <div style={{background:'linear-gradient(135deg,#667eea,#764ba2)',color:'#fff',padding:'18px 20px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div style={{display:'flex',alignItems:'center',gap:12}}><span style={{fontSize:24}}>🤖</span><div><div style={{fontWeight:700,fontSize:17}}>AI Assistant</div><div style={{fontSize:12,opacity:.85}}>Online</div></div></div>
+          <div style={{display:'flex',gap:8}}><button className="ch" onClick={()=>setMessages([])} style={{background:'rgba(255,255,255,0.2)',border:'none',color:'#fff',cursor:'pointer',borderRadius:10,padding:'8px 14px',fontSize:13}}>Clear</button><button className="ch" onClick={()=>setIsOpen(false)} style={{background:'rgba(255,255,255,0.2)',border:'none',color:'#fff',fontSize:20,cursor:'pointer',borderRadius:10,width:38,height:38,display:'flex',alignItems:'center',justifyContent:'center'}}>✕</button></div>
         </div>
-      )}
+        <div style={{flex:1,overflowY:'auto',padding:20,background:'linear-gradient(180deg,#f8faff,#f0f4ff)'}}>
+          {messages.length===0&&<div style={{textAlign:'center',padding:'50px 20px'}}><div style={{fontSize:55,marginBottom:20}}>📚</div><p style={{color:'#64748b',fontSize:15,lineHeight:1.7}}><strong style={{color:'#334155',fontSize:17}}>Welcome!</strong><br/><br/>Ask me anything about<br/>Physical Humanoid Robotics</p></div>}
+          {messages.map((msg,i)=><div key={i} style={{marginBottom:14,display:'flex',justifyContent:msg.role==='user'?'flex-end':'flex-start'}}><div style={{maxWidth:'82%',padding:'14px 18px',fontSize:14,lineHeight:1.6,borderRadius:msg.role==='user'?'20px 20px 6px 20px':'20px 20px 20px 6px',...(msg.role==='user'?{background:'linear-gradient(135deg,#667eea,#764ba2)',color:'#fff'}:msg.role==='error'?{background:'#fee2e2',color:'#dc2626'}:{background:'#fff',color:'#1e293b',boxShadow:'0 2px 12px rgba(0,0,0,0.08)'})}}>{msg.content}{msg.time&&<div style={{fontSize:11,opacity:.7,marginTop:8,textAlign:'right'}}>⚡{msg.time}ms</div>}</div></div>)}
+          {isLoading&&<div style={{marginBottom:14}}><div style={{background:'#fff',padding:'18px 22px',borderRadius:'20px 20px 20px 6px',boxShadow:'0 2px 12px rgba(0,0,0,0.08)',display:'inline-block'}}><div style={{display:'flex',gap:6}}>{[0,1,2].map(i=><span key={i} style={{width:10,height:10,background:'#667eea',borderRadius:'50%',animation:'d 1.4s infinite',animationDelay:i*.16+'s'}}/>)}</div></div></div>}
+          <div ref={messagesEndRef}/>
+        </div>
+        <form onSubmit={handleSubmit} style={{padding:m?'14px 16px':'18px 20px',background:'#fff',borderTop:'1px solid #e5e7eb'}}>
+          <div style={{display:'flex',gap:12}}>
+            <input type="text" value={inputValue} onChange={e=>setInputValue(e.target.value)} placeholder="Type your question..." disabled={isLoading} style={{flex:1,padding:'14px 18px',border:'2px solid #e5e7eb',borderRadius:16,fontSize:15,outline:'none'}}/>
+            <button type="submit" disabled={isLoading||!inputValue.trim()} style={{padding:'14px 22px',background:isLoading||!inputValue.trim()?'#cbd5e1':'linear-gradient(135deg,#667eea,#764ba2)',color:'#fff',border:'none',borderRadius:16,cursor:isLoading||!inputValue.trim()?'not-allowed':'pointer',fontSize:18,fontWeight:600}}>{isLoading?'...':'➤'}</button>
+          </div>
+        </form>
+      </div>}
     </>
   );
 };
-
 export default Chatbot;
