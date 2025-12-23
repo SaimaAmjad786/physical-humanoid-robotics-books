@@ -661,3 +661,274 @@ table {
     animation-duration: 0.4s !important;
   }
 }
+
+/* ========================================
+   Mobile Sidebar - Chapters & Lessons
+   ======================================== */
+
+/* Mobile sidebar toggle button - enhanced visibility */
+@media (max-width: 996px) {
+  /* Make navbar toggle button more prominent */
+  .navbar__toggle {
+    width: 44px;
+    height: 44px;
+    padding: 8px;
+    margin-right: 8px;
+    background: var(--ifm-color-primary);
+    border-radius: 8px;
+    color: white;
+    transition: all 0.3s ease;
+  }
+
+  .navbar__toggle:hover {
+    background: var(--ifm-color-primary-dark);
+    transform: scale(1.05);
+  }
+
+  .navbar__toggle svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Sidebar container styling */
+  .navbar-sidebar {
+    width: 85vw;
+    max-width: 320px;
+    background: var(--ifm-background-color);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  [data-theme='dark'] .navbar-sidebar {
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Sidebar header */
+  .navbar-sidebar__brand {
+    padding: 1rem;
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    background: linear-gradient(135deg, var(--ifm-color-primary-lightest) 0%, transparent 100%);
+  }
+
+  [data-theme='dark'] .navbar-sidebar__brand {
+    background: linear-gradient(135deg, rgba(96, 165, 250, 0.1) 0%, transparent 100%);
+  }
+
+  /* Sidebar items container */
+  .navbar-sidebar__items {
+    padding: 0.5rem 0;
+  }
+
+  /* Individual menu items styling */
+  .navbar-sidebar .menu__link {
+    padding: 0.875rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 0;
+    margin: 0;
+    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .navbar-sidebar .menu__link:hover {
+    background: var(--ifm-color-emphasis-100);
+    border-left-color: var(--ifm-color-primary);
+    padding-left: 1.5rem;
+  }
+
+  .navbar-sidebar .menu__link--active {
+    background: rgba(37, 99, 235, 0.1);
+    border-left-color: var(--ifm-color-primary);
+    font-weight: 600;
+  }
+
+  [data-theme='dark'] .navbar-sidebar .menu__link--active {
+    background: rgba(96, 165, 250, 0.15);
+  }
+
+  /* Category (Chapter) headers */
+  .navbar-sidebar .menu__list-item-collapsible {
+    margin: 0;
+  }
+
+  .navbar-sidebar .menu__list-item-collapsible > .menu__link {
+    font-weight: 600;
+    font-size: 1.05rem;
+    color: var(--ifm-color-primary);
+    background: var(--ifm-color-emphasis-100);
+    border-bottom: 1px solid var(--ifm-color-emphasis-200);
+    padding: 1rem 1.25rem;
+  }
+
+  [data-theme='dark'] .navbar-sidebar .menu__list-item-collapsible > .menu__link {
+    background: rgba(96, 165, 250, 0.08);
+  }
+
+  /* Nested menu items (Lessons) */
+  .navbar-sidebar .menu__list .menu__list {
+    padding-left: 0;
+    background: rgba(0, 0, 0, 0.02);
+  }
+
+  [data-theme='dark'] .navbar-sidebar .menu__list .menu__list {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
+  .navbar-sidebar .menu__list .menu__list .menu__link {
+    padding-left: 2rem;
+    font-size: 0.95rem;
+    border-left-width: 3px;
+  }
+
+  .navbar-sidebar .menu__list .menu__list .menu__link:hover {
+    padding-left: 2.25rem;
+  }
+
+  /* Expand/Collapse arrow */
+  .navbar-sidebar .menu__caret {
+    padding: 0.75rem;
+  }
+
+  .navbar-sidebar .menu__caret::before {
+    transition: transform 0.3s ease;
+  }
+
+  /* Close button styling */
+  .navbar-sidebar__close {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    background: var(--ifm-color-emphasis-100);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .navbar-sidebar__close:hover {
+    background: var(--ifm-color-emphasis-200);
+    transform: rotate(90deg);
+  }
+
+  /* Backdrop when sidebar is open */
+  .navbar-sidebar__backdrop {
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Smooth sidebar animation */
+  .navbar-sidebar--show .navbar-sidebar {
+    animation: slideInSidebar 0.3s ease-out;
+  }
+
+  @keyframes slideInSidebar {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+}
+
+/* Doc page sidebar on tablet */
+@media (max-width: 996px) {
+  /* Floating TOC button for quick navigation */
+  .theme-doc-toc-mobile {
+    position: sticky;
+    top: 60px;
+    z-index: 100;
+    background: var(--ifm-background-color);
+    border: 1px solid var(--ifm-color-emphasis-200);
+    border-radius: 8px;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .theme-doc-toc-mobile button {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Better doc breadcrumbs on mobile */
+  .theme-doc-breadcrumbs {
+    padding: 0.75rem 0;
+    font-size: 0.875rem;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .theme-doc-breadcrumbs::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 576px) {
+  .navbar-sidebar {
+    width: 100vw;
+    max-width: 100vw;
+  }
+
+  .navbar-sidebar .menu__link {
+    padding: 1rem 1rem;
+  }
+
+  .navbar-sidebar .menu__list .menu__list .menu__link {
+    padding-left: 1.5rem;
+  }
+
+  /* Larger touch targets */
+  .navbar__toggle {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 996px) and (orientation: landscape) {
+  .navbar-sidebar {
+    width: 50vw;
+    max-width: 300px;
+  }
+
+  .navbar-sidebar .menu__link {
+    padding: 0.625rem 1rem;
+  }
+}
+
+/* Bottom navigation hint on mobile */
+@media (max-width: 996px) {
+  .pagination-nav {
+    padding: 1rem 0;
+    gap: 0.75rem;
+  }
+
+  .pagination-nav__link {
+    padding: 1rem;
+    border-radius: 12px;
+    border: 2px solid var(--ifm-color-emphasis-200);
+    transition: all 0.2s ease;
+  }
+
+  .pagination-nav__link:hover {
+    border-color: var(--ifm-color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .pagination-nav__label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    opacity: 0.7;
+  }
+
+  .pagination-nav__sublabel {
+    font-size: 1rem;
+    font-weight: 600;
+  }
+}
